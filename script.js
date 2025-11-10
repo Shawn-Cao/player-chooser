@@ -1,9 +1,3 @@
-import { 
-    initIOSInstall, 
-    showInstallPromptIfIOS, 
-    hideInstallPrompt 
-} from './ios-install.js';
-
 const app = document.getElementById('app');
 const instructions = document.getElementById('instructions');
 const countdown = document.getElementById('countdown');
@@ -17,9 +11,7 @@ let activeTouches = new Map();
 let countdownTimer = null;
 let selectionTimer = null;
 let isSelecting = false;
-
-// Initialize iOS install functionality
-initIOSInstall(installPrompt, installModal, installClose);
+let iosInstallModule = null; // Cache the loaded module
 
 // Touch start handler
 app.addEventListener('touchstart', (e) => {
@@ -194,8 +186,8 @@ function selectWinner() {
         setTimeout(() => {
             winner.classList.remove('hidden');
             
-            // Show install button on iOS Safari after a short delay
-            showInstallPromptIfIOS(installPrompt);
+            // Dynamically load and show install button on iOS Safari
+            loadAndShowIOSInstallPrompt();
         }, 300);
         
         // Reset after 3 seconds
@@ -226,8 +218,30 @@ function resetGame() {
     instructions.style.opacity = '1';
     countdown.textContent = '';
     winner.classList.add('hidden');
-    hideInstallPrompt(installPrompt, installModal);
+    
+    // Hide install prompt if module was loaded
+    if (iosInstallModule) {
+        iosInstallModule.hideInstallPrompt(installPrompt, installModal);
+    }
+    
     isSelecting = false;
+}
+
+// Dynamically load iOS install module only when needed
+async function loadAndShowIOSInstallPrompt() {
+    try {
+        // Only load if not already loaded
+        if (!iosInstallModule) {
+            iosInstallModule = await import('./ios-install.js');
+            // Initialize handlers once module is loaded
+            iosInstallModule.initIOSInstall(installPrompt, installModal, installClose);
+        }
+        // Show the prompt
+        iosInstallModule.showInstallPromptIfIOS(installPrompt);
+    } catch (error) {
+        console.warn('Failed to load iOS install module:', error);
+        // Silently fail - non-iOS users won't need this anyway
+    }
 }
 
 // Prevent default touch behaviors
