@@ -1,0 +1,17 @@
+{
+  "name": "player-chooser",
+  "version": "1.0.0",
+  "description": "A client-side web app for randomly choosing a player when multiple people touch the screen simultaneously",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o"
+  },
+  "keywords": [
+    "player",
+    "chooser",
+    "game",
+    "touch"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
