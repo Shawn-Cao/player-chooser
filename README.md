@@ -34,12 +34,24 @@ A client-side web app for randomly choosing a player when multiple people touch 
 4. Select `/ (root)` as the source
 5. Your app will be available at `https://<username>.github.io/player-chooser/`
 
+## PWA Setup
+
+This app is a Progressive Web App (PWA) that can be installed on mobile devices via "Add to Home Screen". The required icon files (`icon-192.png` and `icon-512.png`) are included in the repository.
+
+To regenerate icons (if needed):
+1. Open `generate-icons-simple.html` in your browser
+2. Download the generated icon files
+3. Replace the existing icon files in the root directory
+
 ## Files
 
 - `index.html` - Main HTML structure
 - `styles.css` - Styling and animations
 - `script.js` - Touch detection and game logic
+- `manifest.json` - PWA manifest file
+- `service-worker.js` - Service worker for offline support
 - `package.json` - NPM configuration for local development
+- `generate-icons-simple.html` - Browser-based icon generator (no dependencies)
 
 ## Testing
 

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>Icon Generator</h1>
+    <p>Open this file in a browser and the icons will be generated automatically.</p>
+    <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; margin: 10px;"></canvas>
+    <div id="downloads"></div>
+
+    <script>
+        function createIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw a simple touch icon
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.05;
+            
+            // Draw circle in center
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size * 0.25;
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw smaller circles around (representing multiple touches)
+            const smallRadius = size * 0.08;
+            const offset = size * 0.35;
+            
+            // Top left
+            ctx.beginPath();
+            ctx.arc(centerX - offset, centerY - offset, smallRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Top right
+            ctx.beginPath();
+            ctx.arc(centerX + offset, centerY - offset, smallRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Bottom left
+            ctx.beginPath();
+            ctx.arc(centerX - offset, centerY + offset, smallRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Bottom right
+            ctx.beginPath();
+            ctx.arc(centerX + offset, centerY + offset, smallRadius, 0, Math.PI * 2);
+            ctx.fill();
+            
+            return canvas;
+        }
+
+        const canvas192 = document.getElementById('canvas192');
+        const canvas512 = document.getElementById('canvas512');
+        
+        createIcon(canvas192, 192);
+        createIcon(canvas512, 512);
+        
+        // Create download links
+        const downloads = document.getElementById('downloads');
+        
+        canvas192.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'icon-192.png';
+            a.textContent = 'Download icon-192.png';
+            a.style.display = 'block';
+            a.style.margin = '10px';
+            downloads.appendChild(a);
+        });
+        
+        canvas512.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'icon-512.png';
+            a.textContent = 'Download icon-512.png';
+            a.style.display = 'block';
+            a.style.margin = '10px';
+            downloads.appendChild(a);
+        });
+    </script>
+</body>
+</html>
+
