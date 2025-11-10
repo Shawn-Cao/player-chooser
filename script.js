@@ -1,13 +1,25 @@
+import { 
+    initIOSInstall, 
+    showInstallPromptIfIOS, 
+    hideInstallPrompt 
+} from './ios-install.js';
+
 const app = document.getElementById('app');
 const instructions = document.getElementById('instructions');
 const countdown = document.getElementById('countdown');
 const touchIndicators = document.getElementById('touch-indicators');
 const winner = document.getElementById('winner');
+const installPrompt = document.getElementById('install-prompt');
+const installModal = document.getElementById('install-modal');
+const installClose = document.getElementById('install-close');
 
 let activeTouches = new Map();
 let countdownTimer = null;
 let selectionTimer = null;
 let isSelecting = false;
+
+// Initialize iOS install functionality
+initIOSInstall(installPrompt, installModal, installClose);
 
 // Touch start handler
 app.addEventListener('touchstart', (e) => {
@@ -181,6 +193,9 @@ function selectWinner() {
         // Show winner screen
         setTimeout(() => {
             winner.classList.remove('hidden');
+            
+            // Show install button on iOS Safari after a short delay
+            showInstallPromptIfIOS(installPrompt);
         }, 300);
         
         // Reset after 3 seconds
@@ -211,6 +226,7 @@ function resetGame() {
     instructions.style.opacity = '1';
     countdown.textContent = '';
     winner.classList.add('hidden');
+    hideInstallPrompt(installPrompt, installModal);
     isSelecting = false;
 }
 

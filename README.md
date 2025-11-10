@@ -47,11 +47,20 @@ To regenerate icons (if needed):
 
 - `index.html` - Main HTML structure
 - `styles.css` - Styling and animations
-- `script.js` - Touch detection and game logic
+- `script.js` - Main application logic (ES6 module)
+- `ios-install.js` - iOS Safari install prompt module (ES6 module)
 - `manifest.json` - PWA manifest file
 - `service-worker.js` - Service worker for offline support
 - `package.json` - NPM configuration for local development
 - `generate-icons-simple.html` - Browser-based icon generator (no dependencies)
+
+## Architecture
+
+The app uses ES6 modules for code organization:
+- `script.js` - Core game logic and touch handling
+- `ios-install.js` - Decoupled iOS install prompt functionality
+
+This modular approach keeps the codebase clean and maintainable while leveraging modern browser features (no legacy browser support needed).
 
 ## Testing
 

@@ -28,9 +28,23 @@
                 <h2>🎉</h2>
                 <p>Player chosen!</p>
             </div>
+            <button id="install-prompt" class="install-button hidden">
+                📱 Install App
+            </button>
+        </div>
+        <div id="install-modal" class="install-modal hidden">
+            <div class="install-modal-content">
+                <h3>Install Player Chooser</h3>
+                <ol class="install-steps">
+                    <li>Tap the <strong>Share</strong> button <span class="share-icon">📤</span> at the bottom of Safari</li>
+                    <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+                    <li>Tap <strong>"Add"</strong> to confirm</li>
+                </ol>
+                <button class="install-close-button" id="install-close">Got it!</button>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
 
