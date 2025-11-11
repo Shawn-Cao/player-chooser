@@ -76,33 +76,71 @@ html, body {
     font-weight: bold;
     color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0.9;
 }
 
-.touch-point.active {
-    background: rgba(255, 255, 255, 0.5);
-    border-width: 4px;
-    transform: translate(-50%, -50%) scale(1.2);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+.touch-point.pulsing {
+    animation: touchPointPulse 1.2s ease-in-out infinite;
+    transform-origin: center;
+}
+
+@keyframes touchPointPulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1.0);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+    }
+}
+
+.touch-point.dimmed {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: all 0.5s ease-out;
 }
 
 .touch-point.winner {
-    background: #ffd700;
-    border-color: #ffed4e;
-    transform: translate(-50%, -50%) scale(2);
-    animation: winnerPulse 0.6s ease-out;
+    border-width: 6px;
+    transform: translate(-50%, -50%) scale(3);
+    animation: winnerPulse 1s ease-out, winnerGlow 1.5s ease-in-out infinite;
     z-index: 100;
-    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    font-size: 2.5rem;
+    font-weight: 900;
+    opacity: 1;
+    /* Winner keeps their original color but with enhanced glow and gold accent */
+    border-color: #ffed4e;
+    /* Gold gradient overlay on top of player color */
+    background: linear-gradient(135deg, var(--player-bg, #ffd700) 0%, #ffd700 50%, var(--player-bg, #ffd700) 100%);
+    filter: brightness(1.2) saturate(1.3);
 }
 
 @keyframes winnerPulse {
     0% {
-        transform: translate(-50%, -50%) scale(1.2);
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0.8;
     }
     50% {
-        transform: translate(-50%, -50%) scale(2.5);
+        transform: translate(-50%, -50%) scale(3.2);
+        opacity: 1;
     }
     100% {
-        transform: translate(-50%, -50%) scale(2);
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 1;
+    }
+}
+
+@keyframes winnerGlow {
+    0%, 100% {
+        box-shadow: 0 0 60px var(--player-bg, #ffd700), 
+                    0 0 100px var(--player-bg, #ffd700),
+                    0 0 150px rgba(255, 215, 0, 0.6),
+                    0 0 200px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 80px var(--player-bg, #ffd700), 
+                    0 0 120px var(--player-bg, #ffd700),
+                    0 0 180px rgba(255, 215, 0, 0.8),
+                    0 0 250px rgba(255, 215, 0, 0.5);
     }
 }
 
@@ -112,52 +150,12 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    pointer-events: none;
     z-index: 200;
-    animation: fadeIn 0.3s;
 }
 
 #winner.hidden {
     display: none;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.winner-content {
-    text-align: center;
-    color: white;
-    animation: scaleIn 0.5s ease-out;
-}
-
-@keyframes scaleIn {
-    from {
-        transform: scale(0.5);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.winner-content h2 {
-    font-size: 5rem;
-    margin-bottom: 1rem;
-}
-
-.winner-content p {
-    font-size: 2rem;
-    font-weight: bold;
 }
 
 .ripple {

@@ -21,43 +21,100 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, size, size);
             
-            // Draw a simple touch icon
-            ctx.fillStyle = 'white';
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = size * 0.05;
-            
-            // Draw circle in center
+            // Draw 3 smaller targets with random positions and different colors
             const centerX = size / 2;
             const centerY = size / 2;
-            const radius = size * 0.25;
+            const targetRadius = size * 0.12; // Size of each target
+            const maxOffset = size * 0.25; // Maximum distance from center
             
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-            ctx.fill();
+            // Target colors (distinct colors)
+            const targetColors = [
+                '#FF4444', // Red
+                '#44FF88',  // Green
+                '#4488FF', // Blue
+            ];
             
-            // Draw smaller circles around (representing multiple touches)
-            const smallRadius = size * 0.08;
-            const offset = size * 0.35;
+            // Random positions (using fixed offsets for consistency, but appearing random)
+            const targets = [
+                { 
+                    x: centerX - maxOffset * 0.5, 
+                    y: centerY - maxOffset * 0.3,
+                    color: targetColors[0]
+                },
+                { 
+                    x: centerX + maxOffset * 0.5, 
+                    y: centerY + maxOffset * 0.25,
+                    color: targetColors[1]
+                },
+                { 
+                    x: centerX - maxOffset * 0.15, 
+                    y: centerY + maxOffset * 0.7,
+                    color: targetColors[2]
+                }
+            ];
             
-            // Top left
-            ctx.beginPath();
-            ctx.arc(centerX - offset, centerY - offset, smallRadius, 0, Math.PI * 2);
-            ctx.fill();
+            // STEP 1: Draw all targets first (background layer)
+            targets.forEach((target, index) => {
+                ctx.strokeStyle = target.color;
+                ctx.fillStyle = target.color;
+                ctx.lineWidth = size * 0.02;
+                
+                // Outer ring
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, targetRadius, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Middle ring
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, targetRadius * 0.65, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Inner filled circle
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, targetRadius * 0.35, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Center dot
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, targetRadius * 0.15, 0, Math.PI * 2);
+                ctx.fill();
+            });
             
-            // Top right
-            ctx.beginPath();
-            ctx.arc(centerX + offset, centerY - offset, smallRadius, 0, Math.PI * 2);
-            ctx.fill();
+            // STEP 2: Draw fingers AFTER targets so they overlay on top (foreground layer)
+            // Draw a finger for each target
             
-            // Bottom left
-            ctx.beginPath();
-            ctx.arc(centerX - offset, centerY + offset, smallRadius, 0, Math.PI * 2);
-            ctx.fill();
+            // Finger starting positions (as percentages of icon size, 0.0 to 1.0)
+            // Tune these values to adjust where each finger starts
+            const fingerStarts = [
+                { x: 0.2, y: 0.35 },  // Red target finger start (left border)
+                { x: 0.8, y: 0.7 },   // Green target finger start (right border)
+                { x: 0.4, y: 0.87 }    // Blue target finger start (bottom border)
+            ];
             
-            // Bottom right
-            ctx.beginPath();
-            ctx.arc(centerX + offset, centerY + offset, smallRadius, 0, Math.PI * 2);
-            ctx.fill();
+            // Calculate finger positions starting from border
+            targets.forEach((target, index) => {
+                // Get start position from configurable values
+                const startX = fingerStarts[index].x * size;
+                const startY = fingerStarts[index].y * size;
+                
+                // Draw simple finger as a line from start to target
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.fillStyle = '#FFFFFF';
+                ctx.lineWidth = size * fingerWidth;
+                ctx.lineCap = 'round';
+                
+                // Draw line from border to target
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(target.x, target.y);
+                ctx.stroke();
+                
+                // Draw circle at tip (touching target center)
+                ctx.beginPath();
+                ctx.arc(target.x, target.y, size * 0.04, 0, Math.PI * 2); // Twice as big
+                ctx.fillStyle = target.color;
+                ctx.fill();
+            });
             
             return canvas;
         }

@@ -9,7 +9,8 @@
     "player",
     "chooser",
     "game",
-    "touch"
+    "touch",
+    "PWA"
   ],
   "author": "",
   "license": "MIT"
